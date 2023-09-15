@@ -50,6 +50,7 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
       user.ativo.value = onEdit.ativo;
       user.ma.value = onEdit.ma;
       user.nome.value = onEdit.nome;
+      user.email.value = onEdit.email;
     }
   }, [onEdit]);
 
@@ -62,6 +63,7 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
       !user.admin.value ||
       !user.ativo.value ||
       !user.ma.value ||
+      !user.nome.value ||
       !user.email.value
     ) {
       return toast.warn("Preencha todos os campos!");
@@ -74,6 +76,7 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
           ativo: user.ativo.value,
           ma: user.ma.value,
           nome: user.nome.value,
+          email: user.email.value,
         })
         .then(({ data }) => toast.success(data))
         .catch(({ data }) => toast.error(data));
@@ -84,6 +87,7 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
           ativo: user.ativo.value,
           ma: user.ma.value,
           nome: user.nome.value,
+          email: user.email.value,
         })
         .then(({ data }) => toast.success(data))
         .catch(({ data }) => toast.error(data));
@@ -93,6 +97,7 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
     user.ativo.value = "";
     user.ma.value = "";
     user.nome.value = "";
+    user.email.value = "";
 
     setOnEdit(null);
     getUsers();
@@ -102,19 +107,23 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
     <FormContainer ref={ref} onSubmit={handleSubmit}>
       <InputArea>
         <Label>Admin</Label>
-        <Input name="nome" />
+        <Input name="admin" />
       </InputArea>
       <InputArea>
         <Label>Ativo</Label>
-        <Input name="email" type="email" />
+        <Input name="ativo" />
       </InputArea>
       <InputArea>
         <Label>MA</Label>
-        <Input name="fone" />
+        <Input name="ma" />
       </InputArea>
       <InputArea>
         <Label>Nome</Label>
-        <Input name="data_nascimento" type="date" />
+        <Input name="nome" />
+      </InputArea>
+      <InputArea>
+        <Label>E-mail</Label>
+        <Input name="email" type="email" />
       </InputArea>
 
       <Button type="submit">SALVAR</Button>
