@@ -1,5 +1,5 @@
 import express from "express";
-import { addUser, deleteUser, getUsers, updateUser } from "../controllers/user.js";
+import { addUser, cleanPassword, deleteUser, getUsers, updateUser } from "../controllers/user.js";
 
 const router = express.Router()
 
@@ -9,6 +9,8 @@ router.post("/", addUser)
 
 router.put("/:id", updateUser)
 
-router.delete("/:id", deleteUser)
+router.put("/:id", deleteUser)
+
+router.put("/:id", cleanPassword)
 
 export default router
