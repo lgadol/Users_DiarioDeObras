@@ -48,45 +48,22 @@ export const updateUser = (req, res) => {
   });
 };
 
-export const deleteUser = (req, res) => {
-  const q = `UPDATE user SET ativo = IF(ativo = "true", "false", "true") WHERE id = ?`;
+export const deactiveUser = (req, res) => {
+  const d = `UPDATE user SET ativo = IF(ativo == "true", "false", "true") WHERE id = ?`;
 
-  db.query(q, [req.params.id], (err, result) => {
+  db.query(d, [req.params.id], (err, result) => {
     if (err) return res.json(err);
-    // fazer outra consulta para obter o valor de ativo
-    const q2 = `SELECT ativo FROM user WHERE id = ?`;
-    db.query(q2, [req.params.id], (err2, result2) => {
-      if (err2) return res.json(err2);
-      // enviar o resultado como JSON
-      res.json(result2);
-    });
+    
+    return res.status(200).json("Usuário ativado/desativado com sucesso.");
   });
 };
 
-
 export const cleanPassword = (req, res) => {
-  const q = "UPDATE user SET s = NULL WHERE id = ?";
+  const s = "UPDATE user SET s = NULL WHERE id = ?";
 
-  db.query(q, [req.params.id], (err) => {
+  db.query(s, [req.params.id], (err) => {
     if (err) return res.json(err);
 
     return res.status(200).json("Senha resetada com sucesso.");
   });
 };
-
-
-/* app.put('/desativar_usuario/:id', (req, res) => {
-  const id = req.params.id;
-  const sql = `UPDATE user SET ativo = IF(ativo = "true", "false", "true") WHERE id = ?`;
-
-  crudProjectCONN.query(sql, [id], (err, result) => {
-    if (err) throw err;
-    // fazer outra consulta para obter o valor de ativo
-    const sql2 = `SELECT ativo FROM user WHERE id = ?`;
-    crudProjectCONN.query(sql2, [id], (err2, result2) => {
-      if (err2) throw err2;
-      // enviar o resultado como JSON
-      res.json(result2);
-    });
-  });
-}); */

@@ -1,16 +1,16 @@
 import express from "express";
-import { addUser, cleanPassword, deleteUser, getUsers, updateUser } from "../controllers/user.js";
+import { addUser, cleanPassword, deactiveUser, getUsers, updateUser } from "../controllers/user.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/", getUsers)
+router.get("/", getUsers);
 
-router.post("/", addUser)
+router.post("/", addUser);
 
-router.put("/:id", updateUser)
+router.put("/:id", updateUser);
 
-router.put("/:id", deleteUser)
+router.put("/deactivate/:id", deactiveUser);
 
-router.post("/:id", cleanPassword)
+router.put("/api/cleanPassword/:id", cleanPassword);
 
-export default router
+export default router;
