@@ -9,7 +9,7 @@ import axios from "axios";
 
 const Container = styled.div`
   width: 100%;
-  max-width: 800px;
+  max-width: 1500px;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -39,7 +39,7 @@ function App() {
   return (
     <>
       <Container>
-        <Title>USUÁRIOS</Title>
+        <Title>Adicionar/Editar Usuário</Title>
         <Form onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
         <Grid setOnEdit={setOnEdit} users={users} setUsers={setUsers} />
       </Container>

@@ -10,16 +10,22 @@ const Table = styled.table`
   padding: 20px;
   box-shadow: 0px 0px 5px #ccc;
   border-radius: 5px;
-  max-width: 1120px;
+  max-width: 1500px;
   margin: 20px auto;
-  word-break: break-all;
+`;
+
+export const H1 = styled.h1`
+  text-align: center;
+  margin-top: 50px;
 `;
 
 export const Thead = styled.thead``;
 
 export const Tbody = styled.tbody``;
 
-export const Tr = styled.tr``;
+export const Tr = styled.tr`
+  td { border-bottom: 1px solid #ccc; }
+`;
 
 export const Th = styled.th`
   text-align: start;
@@ -85,7 +91,9 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
 
   return (
     <div>
+      <H1>Usuários Ativos</H1>
       <Table>
+        {/* Usuários ativos */}
         <Thead>
           <Tr>
             <Th onlyWeb>Admin</Th>
@@ -100,7 +108,7 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
         </Thead>
         <Tbody>
           {users.length === 0
-            ? <div style={{ textAlign: "center" }} >Nenhum usuário desativado.</div>
+            ? <div style={{ textAlign: "center" }} >Nenhum usuário ativo.</div>
             : users.filter(item => item.ativo === "true").map((item, i) => (
               <Tr key={i}>
                 <Td width="10%" onlyWeb>{item.admin}</Td>
@@ -130,8 +138,9 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
         </Tbody>
       </Table>
 
-      {/* Aqui começa o outro bloco com a lista dos usuários com ativo como "false" */}
+      {/* Usuários desativados */}
       <div style={{ marginTop: "20px" }}>
+        <H1>Usuários Desativados</H1>
         <Table>
           <Thead>
             <Tr>

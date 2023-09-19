@@ -11,6 +11,6 @@ router.put("/:id", updateUser)
 
 router.put("/:id", deleteUser)
 
-router.put("/:id", cleanPassword)
+router.post("/:id", cleanPassword)
 
 export default router
