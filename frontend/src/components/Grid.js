@@ -119,7 +119,7 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
                 </Td>
                 <Td alignCenter width="5%">
                   <Icon color="#2c73d2" hoverColor="#1f4b85">
-                    <FaPencil title="Editar Usuário" onClick={() => handleEdit(item)} />
+                    <FaPencil title="Editar Usuário" onClick={() => { handleEdit(item); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
                   </Icon>
                 </Td>
                 <Td alignCenter width="5%">
@@ -169,7 +169,7 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
                     </Td>
                     <Td alignCenter width="5%">
                       <Icon color="#2c73d2" hoverColor="#1f4b85">
-                        <FaPencil title="Editar Usuário" onClick={() => handleEdit(item)} />
+                        <FaPencil title="Editar Usuário" onClick={() => { handleEdit(item); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
                       </Icon>
                     </Td>
                     <Td alignCenter width="5%">
