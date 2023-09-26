@@ -46,6 +46,7 @@ function App() {
         {isLoggedIn ? (
           <Route path="/" element={
             <>
+              {console.log('Renderizando o componente quando o usuário está logado')}
               <Container>
                 <Title>Adicionar/Editar Usuário</Title>
                 <Form onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
@@ -56,7 +57,12 @@ function App() {
             </>
           } />
         ) : (
-          <Route path="*" element={<Navigate to="/login" />} /> // Redireciona para '/login' se o usuário não estiver logado
+          <Route path="*" element={
+            <>
+              {console.log('Renderizando o componente quando o usuário não está logado')}
+              <Navigate to="/login" />
+            </>
+          } />
         )}
       </Routes>
     </Router>
