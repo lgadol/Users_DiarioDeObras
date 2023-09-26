@@ -1,4 +1,5 @@
 import { db } from "../db.js";
+import jwt from 'jsonwebtoken';
 
 export const getUsers = (_, res) => {
   const q = "SELECT * FROM user";
@@ -48,22 +49,32 @@ export const updateUser = (req, res) => {
   });
 };
 
-export const deactiveUser = (req, res) => {
-  const d = `UPDATE user SET ativo = IF(ativo == "true", "false", "true") WHERE id = ?`;
-
-  db.query(d, [req.params.id], (err, result) => {
+export const setNull = (req, res) => {
+  const q = "UPDATE user SET `s` = NULL WHERE `id` = ?";
+  db.query(q, [req.params.id], (err) => {
     if (err) return res.json(err);
-    
-    return res.status(200).json("Usuário ativado/desativado com sucesso.");
+    return res.status(200).json("Senha resetada com sucesso.");
   });
 };
 
-export const cleanPassword = (req, res) => {
-  const s = "UPDATE user SET s = NULL WHERE id = ?";
-
-  db.query(s, [req.params.id], (err) => {
+export const toggleAtivo = (req, res) => {
+  const q = "UPDATE user SET `ativo` = IF(`ativo`='true', 'false', 'true') WHERE `id` = ?";
+  db.query(q, [req.params.id], (err) => {
     if (err) return res.json(err);
+    return res.status(200).json("Usuário (ativado/desativado) com sucesso.");
+  });
+};
 
-    return res.status(200).json("Senha resetada com sucesso.");
+export const authenticateUser = (req, res) => {
+  const { ma, s } = req.body;
+  const q = "SELECT * FROM user WHERE `ma` = ? AND `s` = ? AND `admin` = 'true'";
+  db.query(q, [ma, s], (err, data) => {
+    if (err) return res.json(err);
+    if (data.length > 0) {
+      const token = jwt.sign({ ma }, '%%password.for.authentication.DdO.users%%');
+      return res.status(200).json({ token });
+    } else {
+      return res.status(401).json("Usuário sem permissão.");
+    }
   });
 };

@@ -60,32 +60,22 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
     setOnEdit(item);
   };
 
-  /* um jeito de fazer a função para alterar compo "ativo" (não está funcionando) */
-  const handleDeactivate = async (id) => {
-    await axios
-      .put("http://localhost:8800/deactivate" + id)
+  const handleDeactivateUser = async (id) => {
+    await axios.put(`http://localhost:8800/toggleativo/${id}`)
       .then(({ data }) => {
-        const newArray = users.filter((user) => user.id !== id);
-
-        setUsers(newArray);
         toast.success(data);
+        setUsers(users.map(user => user.id === id ? { ...user, ativo: user.ativo === 'true' ? 'false' : 'true' } : user));
       })
       .catch(({ data }) => toast.error(data));
-
-    setOnEdit(null);
   };
 
-  /* outro jeito de fazer a função para alterar compo "s" (não está funcionando) */
-  const handleCleanPassword = (id) => {
-    axios.post(`/api/cleanPassword/${id}`)
-      .then(res => {
-        // mostrar uma mensagem de sucesso
-        toast.success("Senha resetada com sucesso.");
+  const handleClearPassword = async (id) => {
+    await axios.put(`http://localhost:8800/setnull/${id}`)
+      .then(({ data }) => {
+        toast.success(data);
+        setUsers(users.map(user => user.id === id ? { ...user, s: null } : user));
       })
-      .catch(err => {
-        // mostrar uma mensagem de erro
-        toast.error("Ocorreu um erro ao limpar a senha.");
-      });
+      .catch(({ data }) => toast.error(data));
   };
 
   return (
@@ -124,12 +114,12 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
                 </Td>
                 <Td alignCenter width="5%">
                   <Icon color="brown" hoverColor="#571717">
-                    <FaUserLargeSlash title="Desativar Usuário" onClick={() => handleDeactivate(item.id)} />
+                    <FaUserLargeSlash title="Desativar Usuário" onClick={() => handleDeactivateUser(item.id)} />
                   </Icon>
                 </Td>
                 <Td alignCenter width="5%">
                   <Icon color="darkorange" hoverColor="#bd6800">
-                    <FaEraser title="Limpar Senha" onClick={() => handleCleanPassword(item.id)} />
+                    <FaEraser title="Limpar Senha" onClick={() => handleClearPassword(item.id)} />
                   </Icon>
                 </Td>
               </Tr>
@@ -174,12 +164,12 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
                     </Td>
                     <Td alignCenter width="5%">
                       <Icon color="#32cd32" hoverColor="darkgreen">
-                        <FaUserCheck title="Ativar Usuário" onClick={() => handleDeactivate(item.id)} />
+                        <FaUserCheck title="Ativar Usuário" onClick={() => handleDeactivateUser(item.id)} />
                       </Icon>
                     </Td>
                     <Td alignCenter width="5%">
                       <Icon color="darkorange" hoverColor="#bd6800">
-                        <FaEraser title="Limpar Senha" onClick={() => handleCleanPassword(item.id)} />
+                        <FaEraser title="Limpar Senha" onClick={() => handleClearPassword(item.id)} />
                       </Icon>
                     </Td>
 
