@@ -35,9 +35,13 @@ const Button = styled.button`
   cursor: pointer;
   border-radius: 5px;
   border: none;
-  background-color: #2c73d2;
-  color: white;
   height: 42px;
+
+  color: white;
+  background-color: #2c73d2;
+  &:hover {
+    background-color: #1f4b85;
+  }
 `;
 
 const Form = ({ getUsers, onEdit, setOnEdit }) => {

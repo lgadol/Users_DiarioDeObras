@@ -176,15 +176,10 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
                   </Tr>
                 ))}
           </Tbody>
-
         </Table>
-
       </div>
-
     </div>
-
   );
-
 };
 
 export default Grid;

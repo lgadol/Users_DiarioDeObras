@@ -67,14 +67,20 @@ export const toggleAtivo = (req, res) => {
 
 export const authenticateUser = (req, res) => {
   const { ma, s } = req.body;
-  const q = "SELECT * FROM user WHERE `ma` = ? AND `s` = ? AND `admin` = 'true'";
+  const q = "SELECT * FROM user WHERE `ma` = ? AND `s` = ?";
+
   db.query(q, [ma, s], (err, data) => {
     if (err) return res.json(err);
+
     if (data.length > 0) {
+      if (data[0].admin !== 'true') {
+        return res.status(401).json("Usuário sem permissão.");
+      }
+
       const token = jwt.sign({ ma }, '%%password.for.authentication.DdO.users%%');
-      return res.status(200).json({ token });
+      return res.status(200).json({ token, nome: data[0].nome });
     } else {
-      return res.status(401).json("Usuário sem permissão.");
+      return res.status(401).json("MA ou Senha incorretos!");
     }
   });
 };
