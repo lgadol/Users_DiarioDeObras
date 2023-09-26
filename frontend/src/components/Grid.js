@@ -80,9 +80,9 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
 
   return (
     <div>
+      {/* Usuários ativos */}
       <H1>Usuários Ativos</H1>
       <Table>
-        {/* Usuários ativos */}
         <Thead>
           <Tr>
             <Th onlyWeb>Admin</Th>
