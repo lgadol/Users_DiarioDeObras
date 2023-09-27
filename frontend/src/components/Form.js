@@ -44,6 +44,14 @@ const Button = styled.button`
   }
 `;
 
+const Select = styled.select`
+  width: 125px;
+  padding: 0 10px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  height: 40px;
+`;
+
 const Form = ({ getUsers, onEdit, setOnEdit }) => {
   const ref = useRef();
 
@@ -112,11 +120,17 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
     <FormContainer ref={ref} onSubmit={handleSubmit}>
       <InputArea>
         <Label>Admin</Label>
-        <Input name="admin" />
+        <Select name="admin">
+          <option value="true">true</option>
+          <option value="false">false</option>
+        </Select>
       </InputArea>
       <InputArea>
         <Label>Ativo</Label>
-        <Input name="ativo" />
+        <Select name="ativo">
+          <option value="true">true</option>
+          <option value="false">false</option>
+        </Select>
       </InputArea>
       <InputArea>
         <Label>MA</Label>
