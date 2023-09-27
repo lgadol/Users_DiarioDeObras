@@ -72,24 +72,10 @@ const Login = ({ onLogin }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        await axios.post('http://localhost:8800/login', { ma, s })
-            .then(({ data }) => {
-                toast.success(`Bem-Vindo ${data.nome}!`);
-                onLogin();
-                localStorage.setItem('isLoggedIn', 'true');
-                navigate('/');
-            })
-            .catch((error) => {
-                console.log(error.response.data);
-                if (error.response) {
-                    toast.error(error.response.data);
-                } else if (error.request) {
-                    toast.error("Nenhuma resposta recebida do servidor.");
-                } else {
-                    toast.error(error.message);
-                }
-            });
+        const success = await onLogin(ma, s);
+        if (success) {
+            navigate('/');
+        }
     };
 
     return (

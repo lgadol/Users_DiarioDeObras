@@ -45,7 +45,7 @@ const Button = styled.button`
 `;
 
 const Select = styled.select`
-  width: 125px;
+  width: 145px;
   padding: 0 10px;
   border: 1px solid #bbb;
   border-radius: 5px;
@@ -134,11 +134,14 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
       </InputArea>
       <InputArea>
         <Label>MA</Label>
-        <Input name="ma" />
+        <Input name="ma" pattern="MA\d{4}"
+          title="Por favor, insira no formato 'MA' seguido por quatro dígitos."
+          required onChange={e => e.target.value = e.target.value.toUpperCase()}
+        />
       </InputArea>
       <InputArea>
         <Label>Nome</Label>
-        <Input name="nome" />
+        <Input name="nome" required onChange={e => e.target.value = e.target.value.toUpperCase()} />
       </InputArea>
       <InputArea>
         <Label>E-mail</Label>

@@ -1,6 +1,6 @@
 import GlobalStyle from "./styles/global";
-import styled, { createGlobalStyle } from "styled-components";
-import { FaSignOutAlt } from 'react-icons/fa';
+import styled from "styled-components";
+import { FaSignOutAlt, FaUserAlt } from 'react-icons/fa';
 import Form from "./components/Form.js";
 import Grid from "./components/Grid";
 import Login from "./components/Login.js";
@@ -32,6 +32,7 @@ const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  font-size: 15px;
   color: #2c73d2;
   cursor: pointer;
 
@@ -74,10 +75,24 @@ const ImageI = styled.img`
   width: 75px;
 `;
 
+const UserDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  color: #2c73d2;
+  font-size: 15px;
+`;
+
+const Username = styled.span`
+  color: #2c73d2;
+`;
+
 function App() {
   const [users, setUsers] = useState([]);
   const [onEdit, setOnEdit] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
+  const [username, setUsername] = useState(localStorage.getItem('username'));
 
   const getUsers = async () => {
     try {
@@ -86,6 +101,30 @@ function App() {
     } catch (error) {
       toast.error(error);
     }
+  };
+
+  const handleLogin = async (ma, s) => {
+    let success = false;
+    await axios.post('http://localhost:8800/login', { ma, s })
+      .then(({ data }) => {
+        toast.success(`Bem-Vindo ${data.nome}!`);
+        setIsLoggedIn(true);
+        localStorage.setItem('isLoggedIn', 'true');
+        setUsername(data.nome);
+        localStorage.setItem('username', data.nome);
+        success = true;
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        if (error.response) {
+          toast.error(error.response.data);
+        } else if (error.request) {
+          toast.error("Nenhuma resposta recebida do servidor.");
+        } else {
+          toast.error(error.message);
+        }
+      });
+    return success;
   };
 
   useEffect(() => {
@@ -98,10 +137,14 @@ function App() {
       <ImageM src={logoMedabil} alt="Logo" />
       <ImageI src={logoInovacao} alt="Logo" />
       <Routes>
-        <Route path="/login" element={<Login onLogin={() => { setIsLoggedIn(true); localStorage.setItem('isLoggedIn', 'true'); }} />} />
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
         {isLoggedIn ? (
           <Route path="/" element={
             <>
+              <UserDisplay>
+                <FaUserAlt />
+                <Username>{username}</Username>
+              </UserDisplay>
               <LogoutButton setIsLoggedIn={setIsLoggedIn}>
                 Sair
               </LogoutButton>
