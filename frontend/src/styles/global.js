@@ -15,6 +15,18 @@ const Global = createGlobalStyle`
     justify-content: center;
     background-color: #f2f2f2;
     overflow-x: hidden;
+    min-height: 100vh !important;
+    position: relative !important;
+  }
+
+  body.dark-mode {
+    filter: invert(1) hue-rotate(180deg);
+    background-color: #121212;
+    color: black;
+  }
+
+  body.dark-mode img {
+    filter: invert(1) hue-rotate(180deg);
   }
 `;
 

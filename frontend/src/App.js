@@ -1,16 +1,17 @@
+import { useEffect, useState, useContext } from "react";
 import GlobalStyle from "./styles/global";
 import styled from "styled-components";
-import { FaSignOutAlt, FaUserAlt } from 'react-icons/fa';
+import { FaSignOutAlt, FaUserAlt, FaMoon, FaSun } from 'react-icons/fa';
 import Form from "./components/Form.js";
 import Grid from "./components/Grid";
 import Login from "./components/Login.js";
-import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import logoMedabil from './img/Institucional_horizontal.png';
 import logoInovacao from './img/Inovação2.png';
+import { ThemeContext } from "./components/ThemeContext";
 
 const Container = styled.div`
   width: 100%;
@@ -85,11 +86,34 @@ const UserDisplay = styled.div`
 
 const Username = styled.span``;
 
+const DarkButton = styled.button`
+  border: none;
+  cursor: pointer;
+  margin-right: 30px;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 15px;
+`;
+
 function App() {
   const [users, setUsers] = useState([]);
   const [onEdit, setOnEdit] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
   const [username, setUsername] = useState(localStorage.getItem('username'));
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode);
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
 
   const getUsers = async () => {
     try {
@@ -129,35 +153,42 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <ToastContainer autoClose={3000} position={toast.POSITION.BOTTOM_LEFT} />
-      <ImageM src={logoMedabil} alt="Logo" />
-      <ImageI src={logoInovacao} alt="Logo" />
-      <Routes>
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        {isLoggedIn ? (
-          <Route path="/" element={
-            <>
-              <UserDisplay>
-                <FaUserAlt />
-                <Username>{username}</Username>
-              </UserDisplay>
-              <LogoutButton setIsLoggedIn={setIsLoggedIn}>
-                Sair
-              </LogoutButton>
-              <Container>
-                <Title>Adicionar/Editar Usuário</Title>
-                <Form onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
-                <Grid setOnEdit={setOnEdit} users={users} setUsers={setUsers} />
-              </Container>
-              <GlobalStyle />
-            </>
-          } />
-        ) : (
-          <Route path="*" element={<Navigate to="/login" />} />
-        )}
-      </Routes>
-    </Router>
+    <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
+      <Router>
+        <ToastContainer autoClose={3000} position={toast.POSITION.BOTTOM_LEFT} />
+        <ImageM src={logoMedabil} alt="Logo" />
+        <ImageI src={logoInovacao} alt="Logo" />
+        <Routes>
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          {isLoggedIn ? (
+            <Route path="/" element={
+              <>
+                <UserDisplay>
+                  <FaUserAlt />
+                  <Username>{username}</Username>
+                </UserDisplay>
+                <ButtonGroup>
+                  <DarkButton onClick={() => setDarkMode(!darkMode)}>
+                    {darkMode ? <><FaSun /> Modo Claro</> : <><FaMoon /> Modo Escuro</>}
+                  </DarkButton>
+                  <LogoutButton setIsLoggedIn={setIsLoggedIn}>
+                    Sair
+                  </LogoutButton>
+                </ButtonGroup>
+                <Container>
+                  <Title>Adicionar/Editar Usuário</Title>
+                  <Form onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
+                  <Grid setOnEdit={setOnEdit} users={users} setUsers={setUsers} />
+                </Container>
+                <GlobalStyle />
+              </>
+            } />
+          ) : (
+            <Route path="*" element={<Navigate to="/login" />} />
+          )}
+        </Routes>
+      </Router>
+    </ThemeContext.Provider>
   );
 }
 
