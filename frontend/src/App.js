@@ -33,11 +33,11 @@ const ButtonContainer = styled.div`
   align-items: center;
   justify-content: flex-end;
   font-size: 15px;
-  color: #2c73d2;
+  color: red;
   cursor: pointer;
 
   &:hover {
-    color: #1f4b85;
+    color: darkred;
   }
 `;
 
@@ -80,13 +80,10 @@ const UserDisplay = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 3px;
-  color: #2c73d2;
   font-size: 15px;
 `;
 
-const Username = styled.span`
-  color: #2c73d2;
-`;
+const Username = styled.span``;
 
 function App() {
   const [users, setUsers] = useState([]);
