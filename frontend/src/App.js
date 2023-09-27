@@ -1,5 +1,5 @@
 import GlobalStyle from "./styles/global";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { FaSignOutAlt } from 'react-icons/fa';
 import Form from "./components/Form.js";
 import Grid from "./components/Grid";
@@ -9,6 +9,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Routes, useNavigate, Navigate } from 'react-router-dom';
+import logoMedabil from './img/Institucional_horizontal.png';
+import logoInovacao from './img/Inovação2.png';
 
 const Container = styled.div`
   width: 100%;
@@ -24,25 +26,53 @@ const Title = styled.h2``;
 
 const StyledLogoutButton = styled(FaSignOutAlt)`
   cursor: pointer;
-  float: right;
+`;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   color: #2c73d2;
+  cursor: pointer;
+
   &:hover {
     color: #1f4b85;
   }
 `;
 
-const LogoutButton = ({ setIsLoggedIn }) => {
+const ButtonText = styled.span`
+  margin-right: 3px;
+`;
+
+const LogoutButton = ({ setIsLoggedIn, children }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    localStorage.setItem('isLoggedIn', 'false'); // Atualiza o valor no localStorage quando o usuário faz logout
+    localStorage.setItem('isLoggedIn', 'false');
     navigate('/login');
   };
 
-  return <StyledLogoutButton onClick={handleLogout} />;
+  return (
+    <ButtonContainer onClick={handleLogout}>
+      <ButtonText>{children}</ButtonText>
+      <StyledLogoutButton />
+    </ButtonContainer>
+  );
 };
+
+const ImageM = styled.img`
+  position: absolute;
+  width: 100px;
+  margin-top: 5px;
+`;
+
+const ImageI = styled.img`
+  position: absolute;
+  margin-left: 110px;
+  margin-top: 5px;
+  width: 75px;
+`;
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -64,29 +94,27 @@ function App() {
 
   return (
     <Router>
+      <ToastContainer autoClose={3000} position={toast.POSITION.BOTTOM_LEFT} />
+      <ImageM src={logoMedabil} alt="Logo" />
+      <ImageI src={logoInovacao} alt="Logo" />
       <Routes>
-        <Route path="/login" element={<Login onLogin={() => { setIsLoggedIn(true); localStorage.setItem('isLoggedIn', 'true'); }} />} /> 
+        <Route path="/login" element={<Login onLogin={() => { setIsLoggedIn(true); localStorage.setItem('isLoggedIn', 'true'); }} />} />
         {isLoggedIn ? (
           <Route path="/" element={
             <>
-              {console.log('Renderizando o componente quando o usuário está logado')}
-              <LogoutButton setIsLoggedIn={setIsLoggedIn} />
+              <LogoutButton setIsLoggedIn={setIsLoggedIn}>
+                Sair
+              </LogoutButton>
               <Container>
                 <Title>Adicionar/Editar Usuário</Title>
                 <Form onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
                 <Grid setOnEdit={setOnEdit} users={users} setUsers={setUsers} />
               </Container>
-              <ToastContainer autoClose={3000} position={toast.POSITION.BOTTOM_LEFT} />
               <GlobalStyle />
             </>
           } />
         ) : (
-          <Route path="*" element={
-            <>
-              {console.log('Renderizando o componente quando o usuário não está logado')}
-              <Navigate to="/login" />
-            </>
-          } />
+          <Route path="*" element={<Navigate to="/login" />} />
         )}
       </Routes>
     </Router>

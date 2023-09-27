@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from "styled-components";
 import { toast } from 'react-toastify';
@@ -47,11 +47,12 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
 
-  color: white;
-  background-color: #2c73d2;
-  &:hover {
+    color: white;
+    background-color: #2c73d2;
+
+    &:hover {
     background-color: #1f4b85;
-  }
+    }
 `;
 
 const Login = ({ onLogin }) => {
@@ -59,17 +60,25 @@ const Login = ({ onLogin }) => {
     const [s, setPassword] = useState('');
     const navigate = useNavigate();
 
+    useEffect(() => {
+        // Desativa o scroll quando o componente é montado
+        document.body.style.overflow = 'hidden';
+
+        // Reverte a alteração quando o componente é desmontado
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         await axios.post('http://localhost:8800/login', { ma, s })
             .then(({ data }) => {
                 toast.success(`Bem-Vindo ${data.nome}!`);
-                console.log('Chamando onLogin...');
                 onLogin();
                 localStorage.setItem('isLoggedIn', 'true');
                 navigate('/');
-                console.log('onLogin chamado!');
             })
             .catch((error) => {
                 console.log(error.response.data);
