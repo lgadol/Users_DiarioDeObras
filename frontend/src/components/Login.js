@@ -69,9 +69,16 @@ const Login = ({ onLogin }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const success = await onLogin(ma, s);
-        if (success) {
-            navigate('/');
+        try {
+            const success = await onLogin(ma, s);
+            if (success) {
+                localStorage.setItem('isLoggedIn', 'true');  // Adicione esta linha
+                navigate('/');
+            } else {
+                console.error('Login failed');
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
         }
     };
 

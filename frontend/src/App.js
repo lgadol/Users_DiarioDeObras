@@ -124,29 +124,53 @@ function App() {
     }
   };
 
-  const handleLogin = async (ma, s) => {
-    let success = false;
-    await axios.post('http://localhost:8800/login', { ma, s })
-      .then(({ data }) => {
-        toast.success(`Bem-Vindo ${data.nome}!`);
-        setIsLoggedIn(true);
-        localStorage.setItem('isLoggedIn', 'true');
-        setUsername(data.nome);
-        localStorage.setItem('username', data.nome);
-        success = true;
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        if (error.response) {
-          toast.error(error.response.data);
-        } else if (error.request) {
-          toast.error("Nenhuma resposta recebida do servidor.");
-        } else {
-          toast.error(error.message);
-        }
+  const Logar = (ma, password) => {
+    return new Promise((resolve, reject) => {
+      const chamada = JSON.stringify({
+        ma: ma,
+        s: password,
+        Banco: "medabil",
+        Tabela: "get_online()"
       });
-    return success;
-  };
+      console.log('Logar called with:', chamada);
+      axios.post('https://comandos.medabil.eng.br/chamar/', chamada, { headers: { "Content-Type": "application/json" } }
+      ).then((response) => {
+        console.log('API response:', response.data);
+        if (response.data.Status === 'OK') {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }, (erro) => {
+        console.error('API error:', erro);
+        reject(erro);
+      });
+    })
+  }
+
+  /*   const handleLogin = async (ma, s) => {
+      let success = false;
+      await axios.post('http://localhost:8800/login', { ma, s })
+        .then(({ data }) => {
+          toast.success(`Bem-Vindo ${data.nome}!`);
+          setIsLoggedIn(true);
+          localStorage.setItem('isLoggedIn', 'true');
+          setUsername(data.nome);
+          localStorage.setItem('username', data.nome);
+          success = true;
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          if (error.response) {
+            toast.error(error.response.data);
+          } else if (error.request) {
+            toast.error("Nenhuma resposta recebida do servidor.");
+          } else {
+            toast.error(error.message);
+          }
+        });
+      return success;
+    }; */
 
   useEffect(() => {
     getUsers();
@@ -159,7 +183,7 @@ function App() {
         <ImageM src={logoMedabil} alt="Logo" />
         <ImageI src={logoInovacao} alt="Logo" />
         <Routes>
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/login" element={<Login onLogin={Logar} />} />
           {isLoggedIn ? (
             <Route path="/" element={
               <>
