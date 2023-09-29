@@ -72,8 +72,8 @@ const Login = ({ onLogin }) => {
         try {
             const success = await onLogin(ma, s);
             if (success) {
-                localStorage.setItem('isLoggedIn', 'true');  // Adicione esta linha
-                navigate('/');
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.href = '/';
             } else {
                 console.error('Login failed');
             }
