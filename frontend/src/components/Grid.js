@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { FaUserLargeSlash, FaPencil, FaEraser, FaUserCheck } from "react-icons/fa6";
+import { FaUserLargeSlash, FaPencil, FaEraser, FaUserCheck, FaCheck, FaXmark } from "react-icons/fa6";
 import { toast } from "react-toastify";
 
 const Table = styled.table`
@@ -100,8 +100,12 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
             ? <div style={{ textAlign: "center" }} >Nenhum usuário ativo.</div>
             : users.filter(item => item.ativo === "true").map((item, i) => (
               <Tr key={i}>
-                <Td width="10%" onlyWeb>{item.admin}</Td>
-                <Td width="10%" onlyWeb>{item.ativo}</Td>
+                <Td width="10%" onlyWeb>
+                  {item.admin === 'true' ? <FaCheck style={{ color: 'green' }} /> : <FaXmark style={{ color: 'red' }} />}
+                </Td>
+                <Td width="10%" onlyWeb>
+                  {item.ativo === 'true' ? <FaCheck style={{ color: 'green' }} /> : <FaXmark style={{ color: 'red' }} />}
+                </Td>
                 <Td width="10%">{item.ma}</Td>
                 <Td width="30%">{item.nome}</Td>
                 <Td width="40%" onlyWeb>
@@ -150,8 +154,12 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
                 ? <div style={{ textAlign: "center" }} >Nenhum usuário desativado.</div>
                 : users.filter(item => item.ativo === "false").map((item, i) => (
                   <Tr key={i}>
-                    <Td width="10%" onlyWeb>{item.admin}</Td>
-                    <Td width="10%" onlyWeb>{item.ativo}</Td>
+                    <Td width="10%" onlyWeb>
+                      {item.admin === 'true' ? <FaCheck style={{ color: 'green' }} /> : <FaXmark style={{ color: 'red' }} />}
+                    </Td>
+                    <Td width="10%" onlyWeb>
+                      {item.ativo === 'true' ? <FaCheck style={{ color: 'green' }} /> : <FaXmark style={{ color: 'red' }} />}
+                    </Td>
                     <Td width="10%">{item.ma}</Td>
                     <Td width="30%">{item.nome}</Td>
                     <Td width="40%" onlyWeb>
