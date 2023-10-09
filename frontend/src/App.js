@@ -84,7 +84,7 @@ const UserDisplay = styled.div`
   font-size: 15px;
 `;
 
-const Username = styled.span``;
+/* const Username = styled.span``; */
 
 const DarkButton = styled.button`
   border: none;
@@ -124,7 +124,7 @@ function App() {
     }
   };
 
-  const handleLogin = async (ma, s) => {
+  /* const handleLogin = async (ma, s) => {
     let success = false;
     await axios.post('http://localhost:8800/login', { ma, s })
       .then(({ data }) => {
@@ -145,7 +145,7 @@ function App() {
         }
       });
     return success;
-  };
+  }; */
 
   const Logar = (ma, password) => {
     return new Promise((resolve, reject) => {
