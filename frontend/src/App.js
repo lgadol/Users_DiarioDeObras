@@ -174,7 +174,6 @@ function App() {
       });
     })
   }
-  
 
   useEffect(() => {
     getUsers();
