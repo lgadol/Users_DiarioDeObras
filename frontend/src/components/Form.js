@@ -145,9 +145,13 @@ const Form = ({ getUsers, onEdit, setOnEdit }) => {
       </InputArea>
       <InputArea>
         <Label>E-mail</Label>
-        <Input name="email" type="email" />
+        <Input
+          name="email"
+          type="email"
+          pattern=".+@medabil\.com\.br$"
+          title="Por favor, insira um e-mail que termine com '@medabil.com.br'."
+        />
       </InputArea>
-
       <Button type="submit">SALVAR</Button>
     </FormContainer>
   );
