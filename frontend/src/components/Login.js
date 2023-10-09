@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from "styled-components";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
 
@@ -70,18 +71,18 @@ const Login = ({ onLogin }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const success = await onLogin(ma, s);
-            if (success) {
-                localStorage.setItem('isLoggedIn', 'true');
-                window.location.href = '/';
-            } else {
-                console.error('Login failed');
-            }
+          const result = await onLogin(ma, s);
+          if (result.success) {
+            localStorage.setItem('isLoggedIn', 'true');
+            navigate('/');
+          } else {
+            toast.error(result.message);
+          }
         } catch (error) {
-            console.error('Error during login:', error);
+          console.error('Error during login:', error);
         }
-    };
-
+      };      
+    
     return (
         <Container>
             <Form onSubmit={handleSubmit}>

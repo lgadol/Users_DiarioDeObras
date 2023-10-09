@@ -124,7 +124,7 @@ function App() {
     }
   };
 
-/*   const handleLogin = async (ma, s) => {
+  const handleLogin = async (ma, s) => {
     let success = false;
     await axios.post('http://localhost:8800/login', { ma, s })
       .then(({ data }) => {
@@ -145,7 +145,7 @@ function App() {
         }
       });
     return success;
-  }; */
+  };
 
   const Logar = (ma, password) => {
     return new Promise((resolve, reject) => {
@@ -158,27 +158,23 @@ function App() {
       axios.post('https://comandos.medabil.eng.br/chamar/', chamada, { headers: { "Content-Type": "application/json" } }
       ).then((response) => {
         if (response.data.Status === 'OK') {
-          toast.success(`Bem-Vindo ${response.data.nome}!`);
+          toast.success(`Bem-Vindo!`);
           setIsLoggedIn(true);
           localStorage.setItem('isLoggedIn', 'true');
           setUsername(response.data.nome);
           localStorage.setItem('username', response.data.nome);
-          resolve(true);
+          resolve({ success: true });
         } else {
-          resolve(false);
+          toast.error('MA ou senha incorretos.');
+          resolve({ success: false });
         }
       }).catch((error) => {
-        if (error.response) {
-          toast.error(error.response.data);
-        } else if (error.request) {
-          toast.error("Nenhuma resposta recebida do servidor.");
-        } else {
-          toast.error(error.message);
-        }
+        toast.error(error.message);
         reject(error);
       });
     })
   }
+  
 
   useEffect(() => {
     getUsers();
@@ -196,8 +192,8 @@ function App() {
             <Route path="/" element={
               <>
                 <UserDisplay>
-                  <FaUserAlt />
-                  <Username>{username}</Username>
+                  {/* <FaUserAlt />
+                  <Username>{username}</Username> */}
                 </UserDisplay>
                 <ButtonGroup>
                   <DarkButton onClick={() => setDarkMode(!darkMode)}>
