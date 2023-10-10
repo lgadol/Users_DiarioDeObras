@@ -84,7 +84,7 @@ const UserDisplay = styled.div`
   font-size: 15px;
 `;
 
-/* const Username = styled.span``; */
+const Username = styled.span``;
 
 const DarkButton = styled.button`
   border: none;
@@ -124,29 +124,6 @@ function App() {
     }
   };
 
-  /* const handleLogin = async (ma, s) => {
-    let success = false;
-    await axios.post('http://localhost:8800/login', { ma, s })
-      .then(({ data }) => {
-        toast.success(`Bem-Vindo ${data.nome}!`);
-        setIsLoggedIn(true);
-        localStorage.setItem('isLoggedIn', 'true');
-        setUsername(data.nome);
-        localStorage.setItem('username', data.nome);
-        success = true;
-      })
-      .catch((error) => {
-        if (error.response) {
-          toast.error(error.response.data);
-        } else if (error.request) {
-          toast.error("Nenhuma resposta recebida do servidor.");
-        } else {
-          toast.error(error.message);
-        }
-      });
-    return success;
-  }; */
-
   const Logar = (ma, password) => {
     return new Promise((resolve, reject) => {
       const chamada = JSON.stringify({
@@ -158,12 +135,24 @@ function App() {
       axios.post('https://comandos.medabil.eng.br/chamar/', chamada, { headers: { "Content-Type": "application/json" } }
       ).then((response) => {
         if (response.data.Status === 'OK') {
-          toast.success(`Bem-Vindo!`);
-          setIsLoggedIn(true);
-          localStorage.setItem('isLoggedIn', 'true');
-          setUsername(response.data.nome);
-          localStorage.setItem('username', response.data.nome);
-          resolve({ success: true });
+          // Segunda chamada de API para verificar se o usuário é um administrador
+          axios.post('http://localhost:8800/checkAdmin', { ma: ma }, { headers: { "Content-Type": "application/json" } }
+          ).then((adminResponse) => {
+            if (adminResponse.data.admin === 'true') {
+              toast.success(`Bem-Vindo, ${username}!`);
+              setIsLoggedIn(true);
+              localStorage.setItem('isLoggedIn', 'true');
+              setUsername(response.data.nome);
+              localStorage.setItem('username', response.data.nome);
+              resolve({ success: true });
+            } else {
+              toast.error('Usuário sem permissão!');
+              resolve({ success: false });
+            }
+          }).catch((adminError) => {
+            toast.error(adminError.message);
+            reject(adminError);
+          });
         } else {
           toast.error('MA ou senha incorretos.');
           resolve({ success: false });
@@ -191,8 +180,8 @@ function App() {
             <Route path="/" element={
               <>
                 <UserDisplay>
-                  {/* <FaUserAlt />
-                  <Username>{username}</Username> */}
+                  <FaUserAlt />
+                  <Username>{username}</Username>
                 </UserDisplay>
                 <ButtonGroup>
                   <DarkButton onClick={() => setDarkMode(!darkMode)}>

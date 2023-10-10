@@ -84,3 +84,23 @@ export const authenticateUser = (req, res) => {
     }
   });
 };
+
+export const checkAdmin = (req, res) => {
+  const { ma } = req.body;
+  const q = "SELECT * FROM user WHERE `ma` = ?";
+
+  db.query(q, [ma], (err, data) => {
+    if (err) return res.json(err);
+
+    if (data.length > 0) {
+      if (data[0].admin === 'true') {
+        return res.status(200).json({ admin: 'true' });
+      } else {
+        return res.status(200).json({ admin: 'false' });
+      }
+    } else {
+      return res.status(401).json("Usuário sem permissão!");
+    }
+  });
+};
+

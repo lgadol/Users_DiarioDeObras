@@ -54,51 +54,51 @@ const Button = styled.button`
 `;
 
 const Login = ({ onLogin }) => {
-    const [ma, setMa] = useState('');
-    const [s, setPassword] = useState('');
-    const navigate = useNavigate();
+  const [ma, setMa] = useState('');
+  const [s, setPassword] = useState('');
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        // Desativa o scroll quando o componente é montado
-        document.body.style.overflow = 'hidden';
+  useEffect(() => {
+    // Desativa o scroll quando o componente é montado
+    document.body.style.overflow = 'hidden';
 
-        // Reverte a alteração quando o componente é desmontado
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, []);
+    // Reverte a alteração quando o componente é desmontado
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-          const result = await onLogin(ma, s);
-          if (result.success) {
-            localStorage.setItem('isLoggedIn', 'true');
-            navigate('/');
-          } else {
-            toast.error(result.message);
-          }
-        } catch (error) {
-          console.error('Error during login:', error);
-        }
-      };      
-    
-    return (
-        <Container>
-            <Form onSubmit={handleSubmit}>
-                <Title>Login</Title>
-                <Label>
-                    Ma:
-                    <Input value={ma} onChange={e => setMa(e.target.value)} required />
-                </Label>
-                <Label>
-                    Senha:
-                    <Input type="password" value={s} onChange={e => setPassword(e.target.value)} required />
-                </Label>
-                <Button type="submit">Entrar</Button>
-            </Form>
-        </Container>
-    );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await onLogin(ma, s);
+      if (result.success) {
+        localStorage.setItem('isLoggedIn', 'true');
+        navigate('/');
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  };
+
+  return (
+    <Container>
+      <Form onSubmit={handleSubmit}>
+        <Title>Login</Title>
+        <Label>
+          Ma:
+          <Input value={ma} onChange={e => setMa(e.target.value)} required />
+        </Label>
+        <Label>
+          Senha:
+          <Input type="password" value={s} onChange={e => setPassword(e.target.value)} required />
+        </Label>
+        <Button type="submit">Entrar</Button>
+      </Form>
+    </Container>
+  );
 };
 
 export default Login;
