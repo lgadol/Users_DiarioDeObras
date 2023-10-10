@@ -139,7 +139,7 @@ function App() {
           axios.post('http://localhost:8800/checkAdmin', { ma: ma }, { headers: { "Content-Type": "application/json" } }
           ).then((adminResponse) => {
             if (adminResponse.data.admin === 'true') {
-              toast.success(`Bem-Vindo, ${username}!`);
+              toast.success(`Bem-Vindo!`);
               setIsLoggedIn(true);
               localStorage.setItem('isLoggedIn', 'true');
               setUsername(response.data.nome);
@@ -180,8 +180,8 @@ function App() {
             <Route path="/" element={
               <>
                 <UserDisplay>
-                  <FaUserAlt />
-                  <Username>{username}</Username>
+                  {/* <FaUserAlt />
+                  <Username>{username}</Username> */}
                 </UserDisplay>
                 <ButtonGroup>
                   <DarkButton onClick={() => setDarkMode(!darkMode)}>
